@@ -1,0 +1,22 @@
+---
+- name: Self-Heal NGINX Service
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Ensure NGINX container is present and running
+      ansible.builtin.shell: |
+        if [ "$(docker ps -q -f name=^/nginx$)" = "" ]; then
+          # container not running; try to start
+          docker start nginx 2>/dev/null || docker run -d --name nginx -p 80:80 --restart unless-stopped nginx:latest
+        else
+          # container exists and running
+          echo "nginx container already running"
+        fi
+      register: restart_result
+      changed_when: restart_result.stdout != "" or restart_result.rc == 0
+      ignore_errors: false
+
+    - name: Show result
+      ansible.builtin.debug:
+        var: restart_result.stdout_lines
