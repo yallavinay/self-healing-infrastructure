@@ -8,17 +8,4 @@ groups:
           severity: critical
         annotations:
           summary: "NGINX is down"
-          description: "NGINX service is not responding for more than 10s."
-
-  - name: resource_usage
-    rules:
-      # Example placeholder for CPU rule (needs node/exporter metrics to actually work).
-      # You can enable and adapt this when node_exporter or app metrics are available.
-      - alert: HighCpuUsageExample
-        expr: 0 == 1
-        for: 30s
-        labels:
-          severity: warning
-        annotations:
-          summary: "High CPU usage (example)"
-          description: "This is an example rule; configure with real metrics."
+          description: "NGINX service is not responding for more than 10 seconds."
